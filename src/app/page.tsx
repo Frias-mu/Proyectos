@@ -8,9 +8,10 @@ import SabiasQue from "@/components/SabiasQue";
 import GaleriaPreview from "@/components/GaleriaPreview";
 import BanderaFrias from "@/components/BanderaFrías";
 import Testimonios from "@/components/Testimonios";
+import { Estatua } from "@/types/Estatua";
 
 export default function HomePage() {
-  const [estatuas, setEstatuas] = useState<any[]>([]);
+  const [estatuas, setEstatuas] = useState<Estatua[]>([]);
 
   useEffect(() => {
     supabase

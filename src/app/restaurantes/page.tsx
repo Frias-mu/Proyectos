@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/Modal";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Globe2, Utensils } from "lucide-react";
+import Image from "next/image";
 
 type Restaurante = {
   id: string;
@@ -60,13 +61,15 @@ export default function RestaurantesPage() {
               onClick={() => setSelected(item)}
             >
               <div className="h-60 bg-gray-100 flex justify-center items-center overflow-hidden">
-                <img
+                <Image
                   src={item.imagen_url || "/placeholder.jpg"}
-                  onError={(e) => (e.currentTarget.src = "/placeholder.jpg")}
                   alt={item.nombre}
+                  width={400}
+                  height={240}
                   className="max-h-full w-auto object-contain"
                 />
               </div>
+
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-800">
                   {item.nombre}

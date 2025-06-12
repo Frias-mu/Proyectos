@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const eventos = [
   { year: 1825, text: "Fundación del distrito por Simón Bolívar." },
@@ -122,9 +123,11 @@ export default function HistoriaPage() {
                 className="overflow-hidden rounded-lg shadow-md aspect-[4/3] cursor-pointer"
                 onClick={() => setSelected(foto)}
               >
-                <img
+                <Image
                   src={`/images/${foto.src}`}
                   alt={foto.alt}
+                  width={400}
+                  height={300}
                   className="w-full h-full object-cover"
                 />
               </motion.div>
@@ -148,11 +151,15 @@ export default function HistoriaPage() {
                 exit={{ scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <img
+                <Image
                   src={`/images/${selected.src}`}
                   alt={selected.alt}
+                  width={1000}
+                  height={800}
                   className="w-full max-h-[80vh] object-contain"
+                  style={{ width: "100%", height: "auto" }}
                 />
+
                 <div className="p-4 text-center text-gray-700 text-sm">
                   {selected.alt}
                 </div>

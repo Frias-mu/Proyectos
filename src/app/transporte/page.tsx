@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Modal from "@/components/Modal";
 import { motion } from "framer-motion";
 import { BusFront, MapPin, Phone, Globe2 } from "lucide-react";
+import Image from "next/image";
 
 type Transporte = {
   id: string;
@@ -56,13 +57,12 @@ export default function TransportePage() {
               onClick={() => setSelected(item)}
             >
               <div className="aspect-video overflow-hidden bg-gray-100">
-                <img
+                <Image
                   src={item.imagen_url || "/images/placeholder.jpg"}
                   alt={item.nombre}
+                  width={640}
+                  height={360}
                   className="w-full h-full object-cover transition duration-300"
-                  onError={(e) =>
-                    (e.currentTarget.src = "/images/placeholder.jpg")
-                  }
                 />
               </div>
               <div className="p-4">

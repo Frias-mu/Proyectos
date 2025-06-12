@@ -15,6 +15,8 @@ import {
   Landmark,
 } from "lucide-react";
 
+import Image from "next/image";
+
 type Tipo = "hotel" | "restaurante" | "transporte" | "recreacion";
 
 type Item = {
@@ -134,13 +136,12 @@ export default function OperadoresTuristicosPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-16 h-16 rounded-md overflow-hidden flex justify-center items-center bg-gray-100">
-                          <img
+                          <Image
                             src={item.imagen_url || "/placeholder.jpg"}
-                            onError={(e) =>
-                              (e.currentTarget.src = "/placeholder.jpg")
-                            }
                             alt={item.nombre}
-                            className="h-full w-auto object-contain"
+                            width={64}
+                            height={64}
+                            className="object-cover w-full h-full"
                           />
                         </div>
                         <div className="flex-1">

@@ -8,7 +8,9 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 
 export default function EditarRestaurantePage() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string;
+
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -107,8 +109,12 @@ export default function EditarRestaurantePage() {
 
       toast.success("Restaurante actualizado correctamente.");
       router.push("/admin/restaurantes");
-    } catch (err: any) {
-      console.error("Error al actualizar restaurante:", err.message || err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error al actualizar restaurante:", err.message);
+      } else {
+        console.error("Error al actualizar restaurante:", err);
+      }
       setError("No se pudo actualizar el restaurante.");
     } finally {
       setSubmitting(false);

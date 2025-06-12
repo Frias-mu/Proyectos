@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { motion } from "framer-motion";
 import { Palette, MapPin, Phone, Globe2, Video, X } from "lucide-react";
+import Image from "next/image";
 
 type Artista = {
   id: string;
@@ -61,10 +62,11 @@ export default function ArtistasPage() {
               onClick={() => setSelected(item)}
             >
               <div className="h-60 overflow-hidden bg-gray-100 flex items-center justify-center">
-                <img
+                <Image
                   src={item.imagen_url || "/placeholder.jpg"}
-                  onError={(e) => (e.currentTarget.src = "/placeholder.jpg")}
                   alt={item.nombre}
+                  width={400}
+                  height={240}
                   className="max-h-full w-auto object-contain"
                 />
               </div>
@@ -93,10 +95,11 @@ export default function ArtistasPage() {
               </button>
 
               <div className="rounded-md overflow-hidden bg-gray-100 mb-4 flex justify-center items-center max-h-[300px]">
-                <img
+                <Image
                   src={selected.imagen_url || "/placeholder.jpg"}
-                  onError={(e) => (e.currentTarget.src = "/placeholder.jpg")}
                   alt={selected.nombre}
+                  width={500}
+                  height={300}
                   className="max-h-[300px] w-auto h-auto object-contain"
                 />
               </div>

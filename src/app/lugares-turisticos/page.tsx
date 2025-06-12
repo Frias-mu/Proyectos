@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 type Lugar = {
   id: string;
@@ -60,7 +61,7 @@ export default function LugaresTuristicosPage() {
                 className="block bg-white shadow hover:shadow-lg rounded-xl overflow-hidden transition"
               >
                 <div className="aspect-video overflow-hidden">
-                  <img
+                  <Image
                     src={lugar.imagen_url || "/placeholder.jpg"}
                     alt={`Imagen de ${lugar.nombre}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

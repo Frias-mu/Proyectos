@@ -2,6 +2,7 @@
 
 import MapaDireccion from "./MapaDireccion";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 type Props = {
   nombre: string;
@@ -36,11 +37,14 @@ export default function EstatuaConMapa({
 
       {/* Imagen */}
       {imagen_url && (
-        <div className="overflow-hidden rounded-xl shadow-md">
-          <img
+        <div className="relative w-full h-80 overflow-hidden rounded-xl shadow-md">
+          <Image
             src={imagen_url}
             alt={nombre}
-            className="w-full h-80 object-cover transition-transform duration-300 hover:scale-105"
+            width={800}
+            height={500}
+            className="object-cover transition-transform duration-300 hover:scale-105"
+            style={{ width: "100%", height: "100%" }}
           />
         </div>
       )}

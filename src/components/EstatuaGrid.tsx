@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Estatua } from "@/types/Estatua";
 
-export default function EstatuaGrid({ estatuas }: { estatuas: any[] }) {
+export default function EstatuaGrid({ estatuas }: { estatuas: Estatua[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {

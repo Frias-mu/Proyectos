@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Globe2, BedDouble } from "lucide-react";
 import Modal from "@/components/Modal";
+import Image from "next/image";
 
 type Hotel = {
   id: string;
@@ -60,13 +61,15 @@ export default function HotelesPage() {
               onClick={() => setSelected(hotel)}
             >
               <div className="h-60 bg-gray-100 flex justify-center items-center overflow-hidden">
-                <img
+                <Image
                   src={hotel.imagen_url || "/placeholder.jpg"}
-                  onError={(e) => (e.currentTarget.src = "/placeholder.jpg")}
                   alt={hotel.nombre}
+                  width={400}
+                  height={240}
                   className="max-h-full w-auto object-contain"
                 />
               </div>
+
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-800">
                   {hotel.nombre}

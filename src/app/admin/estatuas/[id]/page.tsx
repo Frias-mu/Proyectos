@@ -106,7 +106,7 @@ export default function EditarEstatuaPage() {
       if (formData.imagen) {
         const fileExt = formData.imagen.name.split(".").pop();
         const fileName = `${uuidv4()}.${fileExt}`;
-        const { data, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from("imagenes")
           .upload(`estatuas/${fileName}`, formData.imagen);
 

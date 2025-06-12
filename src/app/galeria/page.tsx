@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowLeft, ArrowRight, ImageIcon } from "lucide-react";
+import Image from "next/image";
 
 const galeria: Record<string, string[]> = {
   Atardeceres: [
@@ -34,19 +35,21 @@ export default function GaleriaPage() {
     setModalOpen(true);
   };
 
-  const cerrarModal = () => setModalOpen(false);
+  const cerrarModal = useCallback(() => {
+    setModalOpen(false);
+  }, []);
 
-  const siguiente = () => {
+  const siguiente = useCallback(() => {
     if (!categoriaActual) return;
     const total = galeria[categoriaActual].length;
     setIndiceActual((prev) => (prev + 1) % total);
-  };
+  }, [categoriaActual]);
 
-  const anterior = () => {
+  const anterior = useCallback(() => {
     if (!categoriaActual) return;
     const total = galeria[categoriaActual].length;
     setIndiceActual((prev) => (prev - 1 + total) % total);
-  };
+  }, [categoriaActual]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -57,7 +60,7 @@ export default function GaleriaPage() {
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [modalOpen, categoriaActual]);
+  }, [modalOpen, cerrarModal, siguiente, anterior]);
 
   return (
     <main className="bg-white min-h-screen py-16 px-4 sm:px-6 lg:px-10 text-gray-800">
@@ -102,9 +105,11 @@ export default function GaleriaPage() {
                   viewport={{ once: true }}
                   onClick={() => abrirModal(categoria, i)}
                 >
-                  <img
+                  <Image
                     src={src}
                     alt={`${categoria} ${i + 1}`}
+                    width={500}
+                    height={300}
                     className="object-cover w-full h-48 sm:h-56 lg:h-64 transition-transform duration-300 hover:opacity-90"
                     loading="lazy"
                   />
@@ -131,10 +136,13 @@ export default function GaleriaPage() {
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
             >
-              <img
+              <Image
                 src={galeria[categoriaActual][indiceActual]}
                 alt={`${categoriaActual} ampliada`}
+                width={1200}
+                height={800}
                 className="w-full max-h-[85vh] object-contain rounded-xl shadow-xl"
+                style={{ width: "100%", height: "auto" }}
               />
 
               <button

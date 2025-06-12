@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const imagenes = [
   "/images/frias_sanandres.jpg",
@@ -36,7 +37,7 @@ export default function FiestasGallery() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
             >
-              <img
+              <Image
                 src={src}
                 alt={`Fiesta ${i + 1}`}
                 className="w-full h-48 object-cover transition-transform duration-300"

@@ -3,16 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin } from "lucide-react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaYoutube,
-  FaWhatsapp,
-  FaTiktok,
-} from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 
 export default function ContactoPage() {
-  const [enviado, setEnviado] = useState(false);
+  const [enviado] = useState(false);
 
   return (
     <main className="text-gray-800">

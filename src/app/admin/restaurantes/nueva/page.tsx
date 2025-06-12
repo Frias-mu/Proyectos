@@ -17,7 +17,7 @@ export default function NuevoRestaurantePage() {
     imagen: null as File | null,
   });
 
-  const [submitting, startTransition] = useTransition();
+  const [submitting] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -83,8 +83,12 @@ export default function NuevoRestaurantePage() {
 
       toast.success("Restaurante creado correctamente.");
       router.push("/admin/restaurantes");
-    } catch (err: any) {
-      console.error("Error inesperado:", err?.message || err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error inesperado:", err.message);
+      } else {
+        console.error("Error inesperado:", err);
+      }
       setError("Error al guardar el restaurante. Revisa los campos.");
     }
   };

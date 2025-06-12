@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { MapPin, Phone, Globe2, Landmark } from "lucide-react";
 import Modal from "@/components/Modal";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 type Recreacion = {
   id: string;
@@ -63,11 +64,12 @@ export default function RecreacionPage() {
               onClick={() => setSelected(item)}
             >
               <div className="h-60 bg-gray-100 flex justify-center items-center overflow-hidden">
-                <img
-                  src={item.imagen_url || "/placeholder.jpg"}
-                  onError={(e) => (e.currentTarget.src = "/placeholder.jpg")}
+                <Image
+                  src={item.imagen_url || "/images/placeholder.jpg"}
                   alt={item.nombre}
-                  className="max-h-full w-auto object-contain transition duration-300"
+                  width={640}
+                  height={360}
+                  className="w-full h-full object-cover transition duration-300"
                 />
               </div>
               <div className="p-4 space-y-1">

@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
+import Image from "next/image";
 
 export default async function LugarDetallePage({
   params,
@@ -8,7 +9,7 @@ export default async function LugarDetallePage({
   // Awaita params antes de destructurar
   const { slug } = await params;
 
-  const { data: lugar, error } = await supabase
+  const { data: lugar } = await supabase
     .from("lugares_turisticos")
     .select("*")
     .eq("slug", slug)
@@ -21,7 +22,7 @@ export default async function LugarDetallePage({
       <h1 className="text-3xl font-bold mb-6 text-blue-800">{lugar.nombre}</h1>
 
       {lugar.imagen_url && (
-        <img
+        <Image
           src={lugar.imagen_url}
           alt={`Imagen de ${lugar.nombre}`}
           className="rounded-lg shadow mb-6 w-full object-cover max-h-[400px]"

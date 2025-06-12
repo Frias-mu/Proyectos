@@ -4,6 +4,7 @@ import { useEffect, ReactNode, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 type ModalProps = {
   isOpen: boolean;
@@ -77,13 +78,13 @@ export default function Modal({
             >
               <X className="w-6 h-6 drop-shadow" />
             </button>
-
-            {/* Imagen destacada */}
             {imageUrl && !imgError && (
               <div className="bg-gray-100 flex items-center justify-center max-h-[250px] overflow-hidden">
-                <img
+                <Image
                   src={imageUrl}
                   alt={imageAlt}
+                  width={600}
+                  height={250}
                   onError={() => setImgError(true)}
                   className="w-auto max-h-[250px] object-contain"
                 />
