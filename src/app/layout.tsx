@@ -7,7 +7,8 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Descubre Frías",
-  description: "Explora las maravillas turísticas del distrito de Frías.",
+  description:
+    "Explora las maravillas turísticas del distrito de frias, puedes interactuar con lo que ofrece el distrito y sus servicios disponibles, conoce más de nuestra historia y cultura, se parte de esta trayectoria para engrandecer a nuestro distrito",
   icons: {
     icon: "/icon1.png",
   },
