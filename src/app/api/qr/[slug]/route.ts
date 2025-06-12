@@ -2,11 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import QRCode from "qrcode";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { slug: string } }
-) {
-  const { slug } = params;
+export async function GET(req: NextRequest) {
+  const urlParts = req.nextUrl.pathname.split("/");
+  const slug = urlParts[urlParts.length - 1];
   const host = req.headers.get("host");
   const protocol = host?.includes("localhost") ? "http" : "https";
 
@@ -15,8 +13,8 @@ export async function GET(
   }
 
   try {
-    const url = `${protocol}://${host}/estatuas/${encodeURIComponent(slug)}`;
-    const qrImageBuffer = await QRCode.toBuffer(url, {
+    const qrUrl = `${protocol}://${host}/estatuas/${encodeURIComponent(slug)}`;
+    const qrImageBuffer = await QRCode.toBuffer(qrUrl, {
       type: "png",
       width: 300,
       errorCorrectionLevel: "H",
