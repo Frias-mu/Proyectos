@@ -4,16 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-// 👇 define explícitamente el tipo de context
-type Context = {
-  params: {
-    id: string;
-  };
-};
-
-export async function POST(req: NextRequest, context: Context) {
+export async function POST(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
-  const id = context.params.id;
+
+  // Extraer el ID desde la URL manualmente
+  const url = new URL(req.url);
+  const parts = url.pathname.split("/");
+  const id = parts[parts.length - 2];
 
   const {
     data: { session },
