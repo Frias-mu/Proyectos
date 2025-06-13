@@ -7,16 +7,17 @@ export default function SabiasQue() {
         </h2>
         <p className="text-lg text-gray-800">
           En Frías, además de la famosa Bella Durmiente, existe la creencia
-          popular de que los *duendes son los guardianes de ciertas 'huacas' o
-          lugares sagrados. Se dice que si te extravías en el campo, podrías
-          haber caído en uno de sus 'encantos' o incluso haber 'bailado con
-          ellos' en otra dimensión antes de volver a la realidad.
+          popular de que los <em>duendes</em> son los guardianes de ciertas
+          &lsquo;huacas&rsquo; o lugares sagrados. Se dice que si te extravías
+          en el campo, podrías haber caído en uno de sus &lsquo;encantos&rsquo;
+          o incluso haber &lsquo;bailado con ellos&rsquo; en otra dimensión
+          antes de volver a la realidad.
         </p>
         <p className="text-lg text-gray-800">
-          Frías tiene su propia DIOSA DE FRIAS, pero no es una deidad antigua.
-          Se trata de una *Sala Cultural* que lleva este nombre, un espacio
-          vibrante dedicado a promover y preservar el arte, la cultura y las
-          ricas tradiciones del distrito.
+          Frías tiene su propia <strong>DIOSA DE FRIAS</strong>, pero no es una
+          deidad antigua. Se trata de una <em>Sala Cultural</em> que lleva este
+          nombre, un espacio vibrante dedicado a promover y preservar el arte,
+          la cultura y las ricas tradiciones del distrito.
         </p>
       </div>
     </section>
