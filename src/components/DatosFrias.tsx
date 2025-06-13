@@ -5,7 +5,7 @@ export default function DatosFrias({
 }) {
   const datos = [
     { label: "Fundación", value: "1825" },
-    { label: "Habitantes", value: "25,000+" },
+    { label: "Habitantes", value: "25,909+" },
     { label: "Altitud", value: "1,650 msnm" },
     { label: "Estatuas", value: totalEstatuas },
   ];
