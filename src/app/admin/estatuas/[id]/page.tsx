@@ -9,7 +9,6 @@ import Image from "next/image";
 
 export default function EditarEstatuaPage() {
   const { id } = useParams() as { id: string };
-
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -30,16 +29,14 @@ export default function EditarEstatuaPage() {
 
   useEffect(() => {
     const fetchEstatua = async () => {
-      setLoading(true);
       const { data, error } = await supabase
         .from("estatuas")
         .select("*")
         .eq("id", id)
         .single();
 
-      if (error) {
+      if (error || !data) {
         setError("No se pudo cargar la estatua.");
-        console.error(error);
         setLoading(false);
         return;
       }
@@ -85,18 +82,17 @@ export default function EditarEstatuaPage() {
         return;
       }
 
-      // Verificar que el slug no esté usado por otra estatua
       const { data: existente, error: slugError } = await supabase
         .from("estatuas")
         .select("id")
         .eq("slug", formData.slug)
-        .not("id", "eq", id) // asegurarse que no sea la misma
+        .not("id", "eq", id)
         .maybeSingle();
 
       if (slugError) throw slugError;
 
       if (existente) {
-        setError("Ya existe una estatua con este slug. Usa uno diferente.");
+        setError("Ya existe una estatua con este slug.");
         setSubmitting(false);
         return;
       }
@@ -104,18 +100,18 @@ export default function EditarEstatuaPage() {
       let imagen_url = formData.imagen_url;
 
       if (formData.imagen) {
-        const fileExt = formData.imagen.name.split(".").pop();
-        const fileName = `${uuidv4()}.${fileExt}`;
+        const ext = formData.imagen.name.split(".").pop();
+        const fileName = `${uuidv4()}.${ext}`;
+        const path = `estatuas/${fileName}`;
+
         const { error: uploadError } = await supabase.storage
           .from("imagenes")
-          .upload(`estatuas/${fileName}`, formData.imagen);
+          .upload(path, formData.imagen);
 
         if (uploadError) throw uploadError;
 
-        const { data: urlData } = supabase.storage
-          .from("imagenes")
-          .getPublicUrl(`estatuas/${fileName}`);
-        imagen_url = urlData?.publicUrl;
+        const { data } = supabase.storage.from("imagenes").getPublicUrl(path);
+        imagen_url = data?.publicUrl || "";
       }
 
       const { error: updateError } = await supabase
@@ -137,11 +133,10 @@ export default function EditarEstatuaPage() {
       router.push("/admin/estatuas");
     } catch (err: unknown) {
       if (err instanceof Error) {
-        console.error("Error al actualizar:", err.message);
+        console.error("Error inesperado:", err.message);
       } else {
-        console.error("Error al actualizar:", err);
+        console.error("Error inesperado:", err);
       }
-      setError("No se pudo actualizar la estatua.");
     } finally {
       setSubmitting(false);
     }
@@ -151,9 +146,20 @@ export default function EditarEstatuaPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Editar Estatua</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Editar Estatua</h1>
+        <Link
+          href="/admin/estatuas"
+          className="text-blue-600 text-sm hover:underline"
+        >
+          ← Volver a estatuas
+        </Link>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 bg-white p-6 rounded shadow"
+      >
         <div>
           <label className="block mb-1 font-medium">Nombre *</label>
           <input
@@ -177,7 +183,7 @@ export default function EditarEstatuaPage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 font-medium">Fecha</label>
             <input
@@ -247,33 +253,29 @@ export default function EditarEstatuaPage() {
             onChange={handleChange}
           />
           {formData.imagen_url && (
-            <p className="text-sm text-gray-600 mt-2">
-              Imagen actual:{" "}
-              <a
-                href={formData.imagen_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                Ver imagen
-              </a>
-            </p>
+            <div className="mt-2">
+              <p className="text-sm text-gray-600">
+                Imagen actual:
+                <a
+                  href={formData.imagen_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline ml-1"
+                >
+                  Ver
+                </a>
+              </p>
+            </div>
           )}
         </div>
 
-        {error && <p className="text-red-600">{error}</p>}
+        {error && <p className="text-red-600 font-medium">{error}</p>}
 
-        <div className="flex items-center justify-between">
-          <Link
-            href="/admin/estatuas"
-            className="text-gray-600 hover:underline text-sm"
-          >
-            Cancelar
-          </Link>
+        <div className="flex justify-end">
           <button
             type="submit"
             disabled={submitting}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
           >
             {submitting ? "Guardando..." : "Guardar cambios"}
           </button>
@@ -284,11 +286,11 @@ export default function EditarEstatuaPage() {
         <div className="mt-12 border-t pt-6">
           <h2 className="text-xl font-semibold mb-2">Código QR</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Este código QR dirige a la ficha pública de la estatua:
+            Este código QR dirige a:
             <br />
-            <span className="font-mono text-blue-700">
+            <code className="text-blue-700 font-mono">
               /estatuas/{formData.slug}
-            </span>
+            </code>
           </p>
 
           <div className="flex flex-col items-center gap-4">

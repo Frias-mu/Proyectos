@@ -36,7 +36,7 @@ export default function EstatuasPage() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8">
+    <section className="min-h-screen bg-gradient-to-br from-gray-100 via-zinc-50 to-gray-200 py-16 px-4 sm:px-6 lg:px-10 text-gray-800">
       <div className="max-w-7xl mx-auto">
         <motion.h1
           className="text-4xl font-extrabold text-blue-800 text-center mb-12"

@@ -50,19 +50,21 @@ export default function AdminDashboardPage() {
         },
         {
           href: "/admin/establecimientos-recreacion",
-          label: "🎡 Establecimientos de Recreación",
+          label: "🎡 Recreación",
         },
       ],
     },
   ];
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="max-w-6xl mx-auto px-6 py-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Panel de Administración</h1>
+        <h1 className="text-3xl font-bold text-blue-900">
+          Panel de Administración
+        </h1>
         <button
           onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm"
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm shadow"
         >
           Cerrar sesión
         </button>
@@ -70,21 +72,26 @@ export default function AdminDashboardPage() {
 
       {userEmail && (
         <p className="text-sm text-gray-600 mb-6">
-          Sesión iniciada como: <span className="font-medium">{userEmail}</span>
+          Sesión iniciada como:{" "}
+          <span className="font-medium text-gray-800">{userEmail}</span>
         </p>
       )}
 
       {secciones.map((section) => (
-        <div key={section.title} className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
+        <div key={section.title} className="mb-10">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            {section.title}
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {section.links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="border border-gray-200 p-6 rounded-lg hover:bg-gray-50 shadow-sm flex items-center justify-between transition"
+                className="flex items-center justify-between p-5 border border-gray-200 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition"
               >
-                <span className="text-lg font-medium">{link.label}</span>
+                <span className="text-lg font-medium text-gray-800">
+                  {link.label}
+                </span>
                 <span className="text-gray-400 text-xl">→</span>
               </Link>
             ))}

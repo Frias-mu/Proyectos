@@ -65,6 +65,12 @@ export default function Navbar() {
                 label="Estatuas"
                 active={isActive("/estatuas")}
               />
+              <NavItem
+                href="/lugares-turisticos"
+                label="Lugares Turísticos"
+                active={isActive("/lugares-turisticos")}
+              />
+
               <DropdownDesktop
                 label="Historia"
                 href="/historia"
@@ -155,6 +161,11 @@ export default function Navbar() {
               href="/estatuas"
               label="Estatuas"
               active={isActive("/estatuas")}
+            />
+            <MobileNavItem
+              href="/lugares-turisticos"
+              label="Lugares Turísticos"
+              active={isActive("/lugares-turisticos")}
             />
 
             {/* Historia móvil */}

@@ -63,7 +63,7 @@ export default function GaleriaPage() {
   }, [modalOpen, cerrarModal, siguiente, anterior]);
 
   return (
-    <main className="bg-white min-h-screen py-16 px-4 sm:px-6 lg:px-10 text-gray-800">
+    <main className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-100 py-16 px-4 sm:px-6 lg:px-10 text-gray-800">
       <div className="max-w-7xl mx-auto">
         <motion.header
           className="text-center mb-14"

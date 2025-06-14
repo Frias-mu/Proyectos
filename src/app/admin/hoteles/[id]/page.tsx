@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 export default function EditarHotelPage() {
   const params = useParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id ?? "";
-
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -110,11 +109,7 @@ export default function EditarHotelPage() {
       toast.success("Hotel actualizado correctamente.");
       router.push("/admin/hoteles");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error("Error al actualizar hotel:", err.message);
-      } else {
-        console.error("Error al actualizar hotel:", err);
-      }
+      console.error("Error al actualizar hotel:", err);
       setError("No se pudo actualizar el hotel.");
     } finally {
       setSubmitting(false);
@@ -125,9 +120,20 @@ export default function EditarHotelPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Editar Hotel</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Editar Hotel</h1>
+        <Link
+          href="/admin/hoteles"
+          className="text-blue-600 text-sm hover:underline"
+        >
+          ← Volver a hoteles
+        </Link>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 bg-white p-6 rounded shadow"
+      >
         <div>
           <label className="block mb-1 font-medium">Nombre *</label>
           <input
@@ -203,25 +209,19 @@ export default function EditarHotelPage() {
                 rel="noopener noreferrer"
                 className="text-blue-600 underline"
               >
-                Ver
+                Ver imagen
               </a>
             </p>
           )}
         </div>
 
-        {error && <p className="text-red-600">{error}</p>}
+        {error && <p className="text-red-600 font-medium">{error}</p>}
 
-        <div className="flex justify-between items-center">
-          <Link
-            href="/admin/hoteles"
-            className="text-gray-600 hover:underline text-sm"
-          >
-            Cancelar
-          </Link>
+        <div className="flex justify-end">
           <button
             type="submit"
             disabled={submitting}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
           >
             {submitting ? "Guardando..." : "Guardar cambios"}
           </button>

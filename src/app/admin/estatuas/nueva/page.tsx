@@ -62,18 +62,13 @@ export default function NuevaEstatuaPage() {
         return;
       }
 
-      // Verifica si el slug ya existe
       const { data: existente, error: slugError } = await supabase
         .from("estatuas")
         .select("id")
         .eq("slug", formData.slug)
         .maybeSingle();
 
-      if (slugError) {
-        console.error("Error al verificar slug:", slugError.message);
-        throw slugError;
-      }
-
+      if (slugError) throw slugError;
       if (existente) {
         setError("Ya existe una estatua con este slug. Usa uno diferente.");
         return;
@@ -82,22 +77,18 @@ export default function NuevaEstatuaPage() {
       let imagen_url: string | null = null;
 
       if (formData.imagen) {
-        const fileExt = formData.imagen.name.split(".").pop();
-        const fileName = `${uuidv4()}.${fileExt}`;
+        const ext = formData.imagen.name.split(".").pop();
+        const fileName = `${uuidv4()}.${ext}`;
+        const path = `estatuas/${fileName}`;
+
         const { error: storageError } = await supabase.storage
           .from("imagenes")
-          .upload(`estatuas/${fileName}`, formData.imagen);
+          .upload(path, formData.imagen);
 
-        if (storageError) {
-          console.error("Error al subir imagen:", storageError.message);
-          throw new Error("No se pudo subir la imagen.");
-        }
+        if (storageError) throw new Error("No se pudo subir la imagen.");
 
-        const { data: publicUrlData } = supabase.storage
-          .from("imagenes")
-          .getPublicUrl(`estatuas/${fileName}`);
-
-        imagen_url = publicUrlData?.publicUrl || null;
+        const { data } = supabase.storage.from("imagenes").getPublicUrl(path);
+        imagen_url = data?.publicUrl || null;
       }
 
       const nuevaEstatua = {
@@ -115,10 +106,7 @@ export default function NuevaEstatuaPage() {
         .from("estatuas")
         .insert([nuevaEstatua]);
 
-      if (insertError) {
-        console.error("Error al insertar datos:", insertError.message);
-        throw insertError;
-      }
+      if (insertError) throw insertError;
 
       router.push("/admin/estatuas");
     } catch (err: unknown) {
@@ -127,24 +115,32 @@ export default function NuevaEstatuaPage() {
       } else {
         console.error("Error inesperado:", err);
       }
-
-      setError(
-        "Error al guardar la estatua. Revisa los campos e intenta nuevamente."
-      );
     }
   };
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Nueva Estatua</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Nueva Estatua</h1>
+        <Link
+          href="/admin/estatuas"
+          className="text-blue-600 text-sm hover:underline"
+        >
+          ← Volver a estatuas
+        </Link>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 bg-white p-6 rounded shadow"
+      >
         <div>
           <label className="block mb-1 font-medium">Nombre *</label>
           <input
             type="text"
             name="nombre"
             required
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-gray-300 px-4 py-2 rounded"
             value={formData.nombre}
             onChange={handleChange}
           />
@@ -155,19 +151,19 @@ export default function NuevaEstatuaPage() {
           <textarea
             name="descripcion"
             rows={3}
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-gray-300 px-4 py-2 rounded"
             value={formData.descripcion}
             onChange={handleChange}
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 font-medium">Fecha</label>
             <input
               type="date"
               name="fecha"
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border border-gray-300 px-4 py-2 rounded"
               value={formData.fecha}
               onChange={handleChange}
             />
@@ -178,7 +174,7 @@ export default function NuevaEstatuaPage() {
               type="text"
               name="slug"
               required
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border border-gray-300 px-4 py-2 rounded"
               value={formData.slug}
               onChange={handleChange}
             />
@@ -190,20 +186,20 @@ export default function NuevaEstatuaPage() {
           <input
             type="text"
             name="ubicacion"
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border border-gray-300 px-4 py-2 rounded"
             value={formData.ubicacion}
             onChange={handleChange}
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block mb-1 font-medium">Latitud</label>
             <input
               type="number"
               name="latitud"
               step="any"
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border border-gray-300 px-4 py-2 rounded"
               value={formData.latitud}
               onChange={handleChange}
             />
@@ -214,7 +210,7 @@ export default function NuevaEstatuaPage() {
               type="number"
               name="longitud"
               step="any"
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border border-gray-300 px-4 py-2 rounded"
               value={formData.longitud}
               onChange={handleChange}
             />
@@ -227,24 +223,18 @@ export default function NuevaEstatuaPage() {
             type="file"
             name="imagen"
             accept="image/*"
-            className="w-full"
+            className="w-full border border-gray-300 px-2 py-2 rounded"
             onChange={handleChange}
           />
         </div>
 
-        {error && <p className="text-red-600">{error}</p>}
+        {error && <p className="text-red-600 font-medium">{error}</p>}
 
-        <div className="flex items-center justify-between">
-          <Link
-            href="/admin/estatuas"
-            className="text-gray-600 hover:underline text-sm"
-          >
-            Cancelar
-          </Link>
+        <div className="flex justify-end">
           <button
             type="submit"
             disabled={submitting}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
           >
             {submitting ? "Guardando..." : "Guardar"}
           </button>
@@ -252,31 +242,28 @@ export default function NuevaEstatuaPage() {
       </form>
 
       {formData.slug && (
-        <div className="mt-12 border-t pt-6">
-          <h2 className="text-xl font-semibold mb-2">
-            Vista previa del Código QR
-          </h2>
+        <div className="mt-10 border-t pt-6">
+          <h2 className="text-xl font-semibold mb-2">Vista previa del QR</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Este código QR abrirá la URL:
+            URL destino:
             <br />
-            <span className="font-mono text-blue-700">
+            <code className="text-blue-700 font-mono">
               /estatuas/{formData.slug}
-            </span>
+            </code>
           </p>
 
           <div className="flex flex-col items-center gap-4">
             <Image
               src={`/api/qr/${formData.slug}`}
-              alt={`QR para ${formData.slug}`}
+              alt={`QR ${formData.slug}`}
               width={300}
               height={300}
               className="rounded shadow"
             />
-
             <a
               href={`/api/qr/${formData.slug}`}
               download={`${formData.slug}-qr.png`}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Descargar QR
             </a>

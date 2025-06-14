@@ -158,6 +158,12 @@ export default function EmpresasTransporteAdminPage() {
           </table>
         </div>
       )}
+      <Link
+        href="/admin"
+        className="text-blue-600 hover:underline text-sm inline-flex items-center gap-1 mb-4"
+      >
+        ← Volver al panel
+      </Link>
     </div>
   );
 }

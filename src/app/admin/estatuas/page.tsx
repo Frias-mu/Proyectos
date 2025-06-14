@@ -66,8 +66,7 @@ export default function EstatuasAdminPage() {
       setDeletingId(id);
       const { error } = await supabase.from("estatuas").delete().eq("id", id);
       if (error) throw error;
-
-      setEstatuas(estatuas.filter((e) => e.id !== id));
+      setEstatuas((prev) => prev.filter((e) => e.id !== id));
     } catch (err) {
       alert("Ocurrió un error al eliminar la estatua.");
       console.error(err);
@@ -77,12 +76,14 @@ export default function EstatuasAdminPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Gestionar Estatuas</h1>
+    <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-900">
+          Gestión de Estatuas
+        </h1>
         <Link
           href="/admin/estatuas/nueva"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm shadow"
         >
           + Nueva Estatua
         </Link>
@@ -93,24 +94,27 @@ export default function EstatuasAdminPage() {
       ) : error ? (
         <p className="text-red-600">{error}</p>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300 bg-white rounded-md">
-            <thead className="bg-gray-100 text-sm font-semibold text-gray-700">
+        <div className="overflow-x-auto bg-white border border-gray-200 rounded-lg shadow">
+          <table className="min-w-full text-sm text-gray-800">
+            <thead className="bg-gray-100 text-xs uppercase font-semibold">
               <tr>
-                <th className="px-4 py-3 border">Imagen</th>
-                <th className="px-4 py-3 border">Nombre</th>
-                <th className="px-4 py-3 border">Descripción</th>
-                <th className="px-4 py-3 border">Ubicación</th>
-                <th className="px-4 py-3 border">Fecha</th>
-                <th className="px-4 py-3 border">Slug</th>
-                <th className="px-4 py-3 border">Coordenadas</th>
-                <th className="px-4 py-3 border">Acciones</th>
-                <th className="px-4 py-3 border">QR</th>
+                <th className="px-4 py-3 text-left">Imagen</th>
+                <th className="px-4 py-3 text-left">Nombre</th>
+                <th className="px-4 py-3 text-left">Descripción</th>
+                <th className="px-4 py-3 text-left">Ubicación</th>
+                <th className="px-4 py-3 text-left">Fecha</th>
+                <th className="px-4 py-3 text-left">Slug</th>
+                <th className="px-4 py-3 text-left">Coordenadas</th>
+                <th className="px-4 py-3 text-left">Acciones</th>
+                <th className="px-4 py-3 text-center">QR</th>
               </tr>
             </thead>
             <tbody>
               {estatuas.map((estatua) => (
-                <tr key={estatua.id} className="border-t">
+                <tr
+                  key={estatua.id}
+                  className="border-t border-gray-200 hover:bg-gray-50 transition"
+                >
                   <td className="px-4 py-2">
                     {estatua.imagen_url ? (
                       <Image
@@ -118,16 +122,18 @@ export default function EstatuasAdminPage() {
                         alt={estatua.nombre}
                         width={60}
                         height={60}
-                        className="rounded object-cover"
+                        className="rounded-md object-cover border border-gray-300"
                       />
                     ) : (
-                      <div className="w-16 h-16 bg-gray-200 flex items-center justify-center text-xs text-gray-500 rounded">
+                      <div className="w-16 h-16 bg-gray-100 text-xs text-gray-500 flex items-center justify-center rounded border border-gray-300">
                         Sin imagen
                       </div>
                     )}
                   </td>
                   <td className="px-4 py-2 font-semibold">{estatua.nombre}</td>
-                  <td className="px-4 py-2">{estatua.descripcion || "-"}</td>
+                  <td className="px-4 py-2 max-w-xs truncate">
+                    {estatua.descripcion || "-"}
+                  </td>
                   <td className="px-4 py-2">{estatua.ubicacion || "-"}</td>
                   <td className="px-4 py-2">
                     {estatua.fecha
@@ -140,7 +146,7 @@ export default function EstatuasAdminPage() {
                       ? `${estatua.latitud}, ${estatua.longitud}`
                       : "-"}
                   </td>
-                  <td className="px-4 py-2 space-x-2 text-sm">
+                  <td className="px-4 py-2 text-sm space-x-3">
                     <Link
                       href={`/admin/estatuas/${estatua.id}`}
                       className="text-blue-600 hover:underline"
@@ -149,13 +155,13 @@ export default function EstatuasAdminPage() {
                     </Link>
                     <button
                       onClick={() => handleDelete(estatua.id)}
-                      className="text-red-600 hover:underline"
                       disabled={deletingId === estatua.id}
+                      className="text-red-600 hover:underline disabled:opacity-50"
                     >
                       {deletingId === estatua.id ? "Eliminando..." : "Eliminar"}
                     </button>
                   </td>
-                  <td className="px-4 py-2 text-center space-y-1 text-sm">
+                  <td className="px-4 py-2 text-center text-sm space-y-1">
                     <a
                       href={`/api/qr/${estatua.slug}`}
                       target="_blank"
@@ -185,6 +191,12 @@ export default function EstatuasAdminPage() {
           </table>
         </div>
       )}
+      <Link
+        href="/admin"
+        className="text-blue-600 hover:underline text-sm inline-flex items-center gap-1 mb-4"
+      >
+        ← Volver al panel
+      </Link>
     </div>
   );
 }
